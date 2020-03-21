@@ -65,26 +65,23 @@ public extension String {
         if let double = Double(self) { return double == 0 ? false : true }
         return nil
     }
+	
+	private static let patternForFindInt = try! NSRegularExpression(pattern: "[0-9]+", options: [])
+	
+	func findInt() -> Int? {
+		guard let match = String.patternForFindInt.firstMatch(in: self, options: [], range: self.ns.fullRange) else {
+			return nil
+		}
+		
+		return Int(self.ns.substring(with: match.range))
+	}
     
     func substringsInBracket() -> [String] {
-        var results: [String] = []
-        guard let regularExpression = try? NSRegularExpression(pattern: "\\([^\\).]*\\)", options: []) else {
-            return results
-        }
-        
-        let nsString = self as NSString
-        let matches = regularExpression.matches(
-            in: nsString as String,
-            options: [],
-            range: NSRange(location: 0, length: nsString.length)
-        )
-        
-        matches.forEach {
-            let result = nsString.substring(with: $0.range) as NSString
-            results.append(result.substring(with: NSRange(location: 1, length: result.length - 2)))
-        }
-        
-        return results
+		return matches(pattern: "\\([^\\).]*\\)")
+			.map {
+				let ns = $0.ns
+				return ns.substring(1, ns.length - 2)! as String
+		}
     }
     
     func substringBefore(_ string: String) -> String {
@@ -120,7 +117,7 @@ public extension String {
         for lineIndex in 0 ..< lines.count {
             let line = lines[lineIndex]
             if firstNotEmptyLineIndex == nil {
-                if line.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 { // line is empty
+				if line.trim().count == 0 { // line is empty
                     continue
                 }
                 firstNotEmptyLineIndex = lineIndex
@@ -250,6 +247,10 @@ public extension NSString {
     var s: String {
         return self as String
     }
+	
+	var fullRange: NSRange {
+		return NSRange(location: 0, length: length)
+	}
     
     func indexOf(_ string: String, startLocation: Int = 0) -> Int? {
         let range = self.range(of: string, range: NSRange(location: startLocation, length: self.length - startLocation))
