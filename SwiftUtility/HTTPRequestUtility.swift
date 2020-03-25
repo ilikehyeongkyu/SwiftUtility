@@ -26,12 +26,15 @@ open class HTTPRequestUtility {
                            encoding: encoding)
     }
     
+    // swiftlint:disable function_body_length
     open func requestSync(_ urlString: String,
                           method: String = "GET",
                           parameters: [String: Any]? = nil,
+                          body: String? = nil,
                           headers: [String: String]? = nil,
                           encoding: String.Encoding = .utf8) -> Result<String, Error> {
         var urlString = urlString
+        
         let method = HTTPMethod(rawValue: method)
         
         if method == .get, let parameters = parameters {
@@ -42,6 +45,10 @@ open class HTTPRequestUtility {
             urlString += "?\(query)"
         }
         
+        guard let url = URL(string: urlString) else {
+            return .failure(MalformedURLError())
+        }
+        
         let headers = { () -> HTTPHeaders in
             var headers = headers ?? [:]
             if let customUserAgent = customUserAgent {
@@ -50,11 +57,23 @@ open class HTTPRequestUtility {
             return HTTPHeaders(headers)
         }()
         
+        var dataRequest: DataRequest!
+        if let body = body {
+            do {
+                var request = try URLRequest(url: url, method: method, headers: headers)
+                request.httpBody = body.data(using: encoding)
+                dataRequest = AF.request(request)
+            } catch {
+                return .failure(error)
+            }
+        } else {
+            dataRequest = AF.request(urlString, method: method, parameters: parameters, headers: headers)
+        }
+        
         let semaphore = DispatchSemaphore(value: 0)
-        let request = AF.request(urlString, method: method, parameters: parameters, headers: headers)
         var responseString: String?
         var responseError: Error?
-        request.responseString(queue: .global()) { response in
+        dataRequest.responseString(queue: .global()) { response in
             switch response.result {
             case .success(let string):
                 responseString = string
@@ -63,6 +82,7 @@ open class HTTPRequestUtility {
             }
             semaphore.signal()
         }
+        
         semaphore.wait()
         
         if let responseString = responseString {
@@ -80,8 +100,14 @@ open class HTTPRequestUtility {
     public class Response<T> {
         public let value: T?
         public let error: Error?
-        public init(value: T? = nil, error: Error? = nil) {
+        
+        public init(_ value: T) {
             self.value = value
+            self.error = nil
+        }
+        
+        public init(_ error: Error) {
+            self.value = nil
             self.error = error
         }
     }
@@ -91,39 +117,37 @@ open class HTTPRequestUtility {
 public extension String {
     func requestAsURL<T>(type: T.Type,
                          parameters: [String: Any]? = nil,
+                         body: String? = nil,
+                         headers: [String: String]? = nil,
                          encoding: String.Encoding = .utf8) -> HTTPRequestUtility.Response<T> {
+        var method = "GET"
+        if parameters != nil { method = "POST" }
+        if body != nil { method = "POST" }
+        
         let result = HTTPRequestUtility.shared.requestSync(
             self,
-            method: ((parameters == nil) ? "GET" : "POST"),
+            method: method,
             parameters: parameters,
+            body: body,
+            headers: headers,
             encoding: encoding
         )
         
         if case Result.failure(let error) = result {
-            return HTTPRequestUtility.Response(error: error)
+            return HTTPRequestUtility.Response(error)
         }
         
         if case Result.success(let responseString) = result {
             if T.self == String.self {
-                return HTTPRequestUtility.Response(value: (responseString as! T))
+                return HTTPRequestUtility.Response(responseString as! T)
             } else if T.self == JSON.self {
                 guard let json = responseString.asJSON(encoding: encoding) else {
-                    return HTTPRequestUtility.Response(error: NSError(
-                        domain: "\(HTTPRequestUtility.self)",
-                        code: 0,
-                        userInfo: [
-                            NSLocalizedDescriptionKey: "response string to JSON failed."
-                    ]))
+                    return HTTPRequestUtility.Response(JSONError())
                 }
-                return HTTPRequestUtility.Response(value: (json as! T))
+                return HTTPRequestUtility.Response(json as! T)
             }
         }
         
-        return HTTPRequestUtility.Response(error: NSError(
-            domain: "\(HTTPRequestUtility.self)",
-            code: 0,
-            userInfo: [
-                NSLocalizedDescriptionKey: "expected result type is not supported."
-        ]))
+        return HTTPRequestUtility.Response(UnsupportedTypeError())
     }
 }

@@ -24,6 +24,8 @@
 		F01BC5BB241A701E00AC5BEC /* HTTPRequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01BC5BA241A701E00AC5BEC /* HTTPRequestUtility.swift */; };
 		F01BC5BE241A714800AC5BEC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F01BC5BD241A714800AC5BEC /* Alamofire */; };
 		F01BC5CE241B0E3700AC5BEC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F01BC5CD241B0E3700AC5BEC /* SwiftyJSON */; };
+		F0812F0524283D6C008318EA /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0812F0424283D6C008318EA /* Error.swift */; };
+		F0812F0724284A62008318EA /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0812F0624284A62008318EA /* DateUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		F01BC5AE241A6FB000AC5BEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F01BC5B8241A6FCA00AC5BEC /* StringUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtility.swift; sourceTree = "<group>"; };
 		F01BC5BA241A701E00AC5BEC /* HTTPRequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequestUtility.swift; sourceTree = "<group>"; };
+		F0812F0424283D6C008318EA /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		F0812F0624284A62008318EA /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +105,9 @@
 			children = (
 				F01BC5A1241A6FB000AC5BEC /* SwiftUtility.h */,
 				F01BC5A2241A6FB000AC5BEC /* Info.plist */,
+				F0812F0424283D6C008318EA /* Error.swift */,
 				F011215F241CB9ED00F26EDA /* ArrayUtility.swift */,
+				F0812F0624284A62008318EA /* DateUtility.swift */,
 				F0112152241C814500F26EDA /* DictionaryUtility.swift */,
 				990628F32424BD5500BAA742 /* DoubleUtility.swift */,
 				990628F12424BD3400BAA742 /* FloatUtility.swift */,
@@ -288,12 +294,14 @@
 				F0112160241CB9ED00F26EDA /* ArrayUtility.swift in Sources */,
 				F01BC5BB241A701E00AC5BEC /* HTTPRequestUtility.swift in Sources */,
 				990628FB2424F0B600BAA742 /* JSONUtility.swift in Sources */,
+				F0812F0524283D6C008318EA /* Error.swift in Sources */,
 				990628F22424BD3400BAA742 /* FloatUtility.swift in Sources */,
 				F0112162241CDDD900F26EDA /* LogUtility.swift in Sources */,
 				F0112166241CF0E000F26EDA /* MirrorUtility.swift in Sources */,
 				990628F42424BD5500BAA742 /* DoubleUtility.swift in Sources */,
 				990628F82424CFFF00BAA742 /* IntUtility.swift in Sources */,
 				F01BC5B9241A6FCA00AC5BEC /* StringUtility.swift in Sources */,
+				F0812F0724284A62008318EA /* DateUtility.swift in Sources */,
 				F0112153241C814500F26EDA /* DictionaryUtility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

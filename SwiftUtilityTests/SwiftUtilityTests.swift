@@ -93,9 +93,15 @@ class SwiftUtilityTests: XCTestCase {
     }
     
     func testHTTPRequestSync() {
-        let googleHTML = String.fromContentsOf("https://www.google.com")
+        let response = "https://www.google.com".requestAsURL(type: String.self)
+        if let error = response.error {
+            XCTAssert(false, error.localizedDescription)
+            return
+        }
+        
+        let googleHTML = response.value!
         XCTAssert(
-            googleHTML?.contains("<!doctype html>") ?? false,
+            googleHTML.contains("<!doctype html>") ?? false,
             "contents of https://www.google.com is not contains html tag"
         )
     }
@@ -153,5 +159,10 @@ class SwiftUtilityTests: XCTestCase {
             string.substringBefore("(") == "123",
             "string.substringBefore result is not expected."
         )
+    }
+    
+    func testStringAsDate() {
+        let timeinterval = "10:00".asHourMinutes
+        print("")
     }
 }

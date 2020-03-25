@@ -65,7 +65,43 @@ public extension String {
         if let double = Double(self) { return double == 0 ? false : true }
         return nil
     }
+    
+    func removeAll(_ string: String) -> String {
+        return self.replacingOccurrences(of: string, with: "")
+    }
+    
+    /// 콜론으로 구분된 시간 문자열을 오늘날짜의 시간값으로 변환
+    var asHourMinute: TimeInterval? {
+        let value = self.noWhitespaces.removeAll(":")
+        if value.count != 4 { return nil }
+        guard let hour = value.ns.substring(to: 2).asInt,
+            let minute = value.ns.substring(from: 2).asInt else { return nil }
+        let calendar = Calendar(identifier: .iso8601)
+        let date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: Date())
+        return date?.timeIntervalSince1970
+    }
+    
+    /// 콜론으로 구분된 시간 문자열을 0시부터의 소요시간 값으로 변환
+    var asSeconds: TimeInterval? {
+        let value = self.noWhitespaces.removeAll(":")
+        if value.count != 4 { return nil }
+        guard let hour = value.ns.substring(to: 2).asInt,
+            let minute = value.ns.substring(from: 2).asInt else { return nil }
+        return TimeInterval((hour * 60 * 60) + (minute * 60))
+    }
+    
+    func parseToTimeInterval() -> TimeInterval? {
+        let text = self.noWhitespaces
+        if text == text.matches(pattern: "\\d+분").first {
+            return text.substringBefore("분")!.asDouble! * 60
+        }
+        
+        // TODO more
+        
+        return nil
+    }
 	
+    // swiftlint:disable force_try
 	private static let patternForFindInt = try! NSRegularExpression(pattern: "[0-9]+", options: [])
 	
 	func findInt() -> Int? {
@@ -76,19 +112,51 @@ public extension String {
 		return Int(self.ns.substring(with: match.range))
 	}
     
-    func substringsInBracket() -> [String] {
-		return matches(pattern: "\\([^\\).]*\\)")
-			.map {
-				let ns = $0.ns
-				return ns.substring(1, ns.length - 2)! as String
-		}
+    func removeEmptyBrackets() -> String {
+        let brackets = ["()", "[]", "{}", "\"\"", "''"]
+        var result = self
+        brackets.forEach {
+            let open = $0.ns.substring(to: 1)
+            let close = $0.ns.substring(from: 1)
+            let substrings = result.substringsInBracket(open, close)
+            substrings.forEach {
+                if $0.noWhitespaces.isEmpty {
+                    result = result.removeAll("\(open)\($0)\(close)")
+                }
+            }
+        }
+        return result
     }
     
-    func substringBefore(_ string: String) -> String {
-        let nsString = self as NSString
-        let range = nsString.range(of: string)
-        if range.location == NSNotFound { return self }
-        return nsString.substring(to: range.location)
+    func substringsInBracket(_ open: String, _ close: String) -> [String] {
+        let ns = self.ns
+        var results: [String] = []
+        var cursor = 0
+        while true {
+            let startIndex = ns.indexOf(open, cursor)
+            if startIndex < 0 { break }
+            let endIndex = ns.indexOf(close, startIndex + open.count)
+            if endIndex < 0 { break }
+            let substring = ns.substring(startIndex + open.count, endIndex)!
+            results.append(substring as String)
+            cursor = endIndex + 1
+        }
+        
+        return results
+    }
+    
+    func substringBefore(_ string: String) -> String? {
+        let ns = self.ns
+        let range = ns.range(of: string)
+        if range.location == NSNotFound { return nil }
+        return ns.substring(to: range.location)
+    }
+    
+    func substringAfter(_ string: String) -> String? {
+        let ns = self.ns
+        let range = ns.range(of: string)
+        if range.location == NSNotFound { return nil }
+        return ns.substring(from: range.upperBound)
     }
     
     func trim() -> String {
@@ -165,6 +233,25 @@ public extension String {
     static func isEqualIfNotNil(_ string1: String?, _ string2: String?) -> Bool {
         guard let string1 = string1, let string2 = string2 else { return false }
         return string1 == string2
+    }
+    
+    var hexEscaped: String {
+        var result = ns
+        var unicodeIndex = -1
+        while true {
+            unicodeIndex = result.indexOf("\\u")
+            if unicodeIndex < 0 { break }
+            
+            let hexdecimal = (result.substring(unicodeIndex + 2, unicodeIndex + 6) ?? "") as String
+            let c = Int(hexdecimal, radix: 16) ?? 0
+            var s = ""
+            if let unicodeScalar = UnicodeScalar(c) {
+                s = String(describing: unicodeScalar)
+            }
+            result = result.replacingOccurrences(of: "\\u\(hexdecimal)", with: s) as NSString
+        }
+        
+        return result as String
     }
     
     var separatedKorean: String {
@@ -252,9 +339,9 @@ public extension NSString {
 		return NSRange(location: 0, length: length)
 	}
     
-    func indexOf(_ string: String, startLocation: Int = 0) -> Int? {
+    func indexOf(_ string: String, _ startLocation: Int = 0) -> Int {
         let range = self.range(of: string, range: NSRange(location: startLocation, length: self.length - startLocation))
-        if range.location == NSNotFound { return nil }
+        if range.location == NSNotFound { return -1 }
         return range.location
     }
     

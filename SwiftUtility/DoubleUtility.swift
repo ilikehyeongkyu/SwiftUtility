@@ -9,7 +9,11 @@
 import Foundation
 
 public extension Double {
-	var asFloat: Float? {
-		return Float(self)
-	}
+    func multiply(_ value: Int) -> Double? {
+        return self * Double(value)
+    }
+    
+    var asFloat: Float? {
+        return Float(self)
+    }
 }

@@ -12,4 +12,8 @@ public extension Array {
     var isNotEmpty: Bool {
         return !isEmpty
     }
+    
+    var isCompactEmpty: Bool {
+        return self.compactMap({ $0 }).isEmpty
+    }
 }
