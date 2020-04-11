@@ -19,6 +19,15 @@ public extension String {
         return !isEmpty
     }
     
+    static func isEmpty(_ string: String?) -> Bool {
+        guard let string = string else { return true }
+        return string.isEmpty
+    }
+    
+    static func isNotEmpty(_ string: String?) -> Bool {
+        return !isEmpty(string)
+    }
+    
     func lpad(_ targetCount: Int, _ char: Character) -> String {
         var result = self
         while result.count < targetCount { result = "\(char)" + result }
