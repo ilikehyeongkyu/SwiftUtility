@@ -14,7 +14,7 @@
 		F0112153241C814500F26EDA /* DictionaryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0112152241C814500F26EDA /* DictionaryUtility.swift */; };
 		F011215D241C8EFD00F26EDA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F011215C241C8EFD00F26EDA /* .swiftlint.yml */; };
 		F011215E241C8EFD00F26EDA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F011215C241C8EFD00F26EDA /* .swiftlint.yml */; };
-		F0112160241CB9ED00F26EDA /* ArrayUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F011215F241CB9ED00F26EDA /* ArrayUtility.swift */; };
+		F0112160241CB9ED00F26EDA /* SequenceUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F011215F241CB9ED00F26EDA /* SequenceUtility.swift */; };
 		F0112162241CDDD900F26EDA /* LogUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0112161241CDDD900F26EDA /* LogUtility.swift */; };
 		F0112166241CF0E000F26EDA /* MirrorUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0112165241CF0E000F26EDA /* MirrorUtility.swift */; };
 		F01BC5A8241A6FB000AC5BEC /* SwiftUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F01BC59E241A6FB000AC5BEC /* SwiftUtility.framework */; };
@@ -45,7 +45,7 @@
 		990628FA2424F0B600BAA742 /* JSONUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUtility.swift; sourceTree = "<group>"; };
 		F0112152241C814500F26EDA /* DictionaryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryUtility.swift; sourceTree = "<group>"; };
 		F011215C241C8EFD00F26EDA /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		F011215F241CB9ED00F26EDA /* ArrayUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayUtility.swift; sourceTree = "<group>"; };
+		F011215F241CB9ED00F26EDA /* SequenceUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceUtility.swift; sourceTree = "<group>"; };
 		F0112161241CDDD900F26EDA /* LogUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogUtility.swift; sourceTree = "<group>"; };
 		F0112165241CF0E000F26EDA /* MirrorUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorUtility.swift; sourceTree = "<group>"; };
 		F01BC59E241A6FB000AC5BEC /* SwiftUtility.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftUtility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +106,7 @@
 				F01BC5A1241A6FB000AC5BEC /* SwiftUtility.h */,
 				F01BC5A2241A6FB000AC5BEC /* Info.plist */,
 				F0812F0424283D6C008318EA /* Error.swift */,
-				F011215F241CB9ED00F26EDA /* ArrayUtility.swift */,
+				F011215F241CB9ED00F26EDA /* SequenceUtility.swift */,
 				F0812F0624284A62008318EA /* DateUtility.swift */,
 				F0112152241C814500F26EDA /* DictionaryUtility.swift */,
 				990628F32424BD5500BAA742 /* DoubleUtility.swift */,
@@ -291,7 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0112160241CB9ED00F26EDA /* ArrayUtility.swift in Sources */,
+				F0112160241CB9ED00F26EDA /* SequenceUtility.swift in Sources */,
 				F01BC5BB241A701E00AC5BEC /* HTTPRequestUtility.swift in Sources */,
 				990628FB2424F0B600BAA742 /* JSONUtility.swift in Sources */,
 				F0812F0524283D6C008318EA /* Error.swift in Sources */,
