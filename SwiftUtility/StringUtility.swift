@@ -28,9 +28,13 @@ public extension String {
         return !isEmpty(string)
     }
     
-    func lpad(_ targetCount: Int, _ char: Character) -> String {
+    var isNull: Bool {
+        return self.noWhitespaces.lowercased() == "null"
+    }
+    
+    func lpad(_ length: Int, _ padChar: Character) -> String {
         var result = self
-        while result.count < targetCount { result = "\(char)" + result }
+        while result.count < length { result = "\(padChar)" + result }
         return result
     }
     
@@ -90,7 +94,7 @@ public extension String {
         return date?.timeIntervalSince1970
     }
     
-    /// 콜론으로 구분된 시간 문자열을 0시부터의 소요시간 값으로 변환
+    /// 콜론으로 구분된 시간 문자열(예를 들면 17:35)을 자정으로부터의 소요시간 값으로 변환
     var asSeconds: TimeInterval? {
         let value = self.noWhitespaces.removeAll(":")
         if value.count != 4 { return nil }
@@ -99,6 +103,7 @@ public extension String {
         return TimeInterval((hour * 60 * 60) + (minute * 60))
     }
     
+    /// 시간 문자열(예를들면 5분)을 초단위시간(TimeInterval) 값으로 변환
     func parseToTimeInterval() -> TimeInterval? {
         let text = self.noWhitespaces
         if text == text.matches(pattern: "\\d+분").first {

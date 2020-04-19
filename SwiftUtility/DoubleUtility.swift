@@ -16,4 +16,12 @@ public extension Double {
     var asFloat: Float? {
         return Float(self)
     }
+    
+    func asMeterToDistance() -> String {
+        if self >= 1000 {
+            return String(format: "%.1fkm", self / 1000.0)
+        } else {
+            return String(format: "%.1fm", self)
+        }
+    }
 }

@@ -24,4 +24,9 @@ public extension Int {
 		
 		return components.joined(separator: " ")
 	}
+    
+    func lpadIfOverZero(_ length: Int, _ padChar: Character) -> String? {
+        guard self > 0 else { return nil }
+        return String(self).lpad(length, padChar)
+    }
 }

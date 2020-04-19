@@ -26,6 +26,10 @@
 		F01BC5CE241B0E3700AC5BEC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F01BC5CD241B0E3700AC5BEC /* SwiftyJSON */; };
 		F0812F0524283D6C008318EA /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0812F0424283D6C008318EA /* Error.swift */; };
 		F0812F0724284A62008318EA /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0812F0624284A62008318EA /* DateUtility.swift */; };
+		F08DA91D244748A600B2ED6E /* Appliable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08DA91C244748A600B2ED6E /* Appliable.swift */; };
+		F08DA94F2447573C00B2ED6E /* BundleUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08DA94E2447573C00B2ED6E /* BundleUtility.swift */; };
+		F09F157424482C8F0076C812 /* SQLUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09F157324482C8F0076C812 /* SQLUtility.swift */; };
+		F0D43F49244846A7009AE8CE /* CollectionUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D43F48244846A7009AE8CE /* CollectionUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +62,10 @@
 		F01BC5BA241A701E00AC5BEC /* HTTPRequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequestUtility.swift; sourceTree = "<group>"; };
 		F0812F0424283D6C008318EA /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		F0812F0624284A62008318EA /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
+		F08DA91C244748A600B2ED6E /* Appliable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appliable.swift; sourceTree = "<group>"; };
+		F08DA94E2447573C00B2ED6E /* BundleUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleUtility.swift; sourceTree = "<group>"; };
+		F09F157324482C8F0076C812 /* SQLUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLUtility.swift; sourceTree = "<group>"; };
+		F0D43F48244846A7009AE8CE /* CollectionUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +113,10 @@
 			children = (
 				F01BC5A1241A6FB000AC5BEC /* SwiftUtility.h */,
 				F01BC5A2241A6FB000AC5BEC /* Info.plist */,
+				F0D43F48244846A7009AE8CE /* CollectionUtility.swift */,
+				F09F157324482C8F0076C812 /* SQLUtility.swift */,
 				F0812F0424283D6C008318EA /* Error.swift */,
+				F08DA94E2447573C00B2ED6E /* BundleUtility.swift */,
 				F011215F241CB9ED00F26EDA /* SequenceUtility.swift */,
 				F0812F0624284A62008318EA /* DateUtility.swift */,
 				F0112152241C814500F26EDA /* DictionaryUtility.swift */,
@@ -117,6 +128,7 @@
 				F0112161241CDDD900F26EDA /* LogUtility.swift */,
 				F0112165241CF0E000F26EDA /* MirrorUtility.swift */,
 				F01BC5B8241A6FCA00AC5BEC /* StringUtility.swift */,
+				F08DA91C244748A600B2ED6E /* Appliable.swift */,
 			);
 			path = SwiftUtility;
 			sourceTree = "<group>";
@@ -293,9 +305,13 @@
 			files = (
 				F0112160241CB9ED00F26EDA /* SequenceUtility.swift in Sources */,
 				F01BC5BB241A701E00AC5BEC /* HTTPRequestUtility.swift in Sources */,
+				F0D43F49244846A7009AE8CE /* CollectionUtility.swift in Sources */,
+				F08DA94F2447573C00B2ED6E /* BundleUtility.swift in Sources */,
 				990628FB2424F0B600BAA742 /* JSONUtility.swift in Sources */,
 				F0812F0524283D6C008318EA /* Error.swift in Sources */,
 				990628F22424BD3400BAA742 /* FloatUtility.swift in Sources */,
+				F09F157424482C8F0076C812 /* SQLUtility.swift in Sources */,
+				F08DA91D244748A600B2ED6E /* Appliable.swift in Sources */,
 				F0112162241CDDD900F26EDA /* LogUtility.swift in Sources */,
 				F0112166241CF0E000F26EDA /* MirrorUtility.swift in Sources */,
 				990628F42424BD5500BAA742 /* DoubleUtility.swift in Sources */,

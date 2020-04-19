@@ -9,7 +9,7 @@
 import Foundation
 
 public extension Float {
-	var asDouble: Double? {
+	var asDouble: Double {
 		return Double(self)
 	}
 }

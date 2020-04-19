@@ -41,6 +41,14 @@ open class LogUtility {
         print("\(file)@\(function):\(line)")
     }
     
+    /// error
+    open func e(_ error: Error, file: String = #file, function: String = #function, line: Int = #line) {
+        printDate()
+        print("error:")
+        print(error.localizedDescription)
+        print("\(file)@\(function):\(line)")
+    }
+    
     open func printDate() {
         print(dateFormatter.string(from: Date()))
     }

@@ -115,6 +115,18 @@ open class HTTPRequestUtility {
 
 // swiftlint:disable force_cast
 public extension String {
+    func requestAsURLAsync<T>(type: T.Type,
+                              parameters: [String: Any]? = nil,
+                              body: String? = nil,
+                              headers: [String: String]? = nil,
+                              encoding: String.Encoding = .utf8,
+                              completion: ((HTTPRequestUtility.Response<T>) -> Void)? = nil) {
+        DispatchQueue.global().async {
+            let response = self.requestAsURL(type: type, parameters: parameters, body: body, headers: headers, encoding: encoding)
+            DispatchQueue.main.async { completion?(response) }
+        }
+    }
+    
     func requestAsURL<T>(type: T.Type,
                          parameters: [String: Any]? = nil,
                          body: String? = nil,
