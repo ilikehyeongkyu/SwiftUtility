@@ -28,4 +28,18 @@ public extension Array {
         let i = try firstIndex(where: `where`)
         return i
     }
+    
+    func nextOrFirst(of index: Int) -> Element? {
+        if isEmpty { return nil }
+        var index = index + 1
+        if index >= self.count { index = 0 }
+        return self[index]
+    }
+    
+    func prevOrLast(of index: Int) -> Element? {
+        if isEmpty { return nil }
+        var index = index - 1
+        if index < 0 { index = count - 1 }
+        return self[index]
+    }
 }

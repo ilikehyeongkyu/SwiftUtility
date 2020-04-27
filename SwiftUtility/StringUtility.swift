@@ -9,10 +9,15 @@
 import Foundation
 import SwiftyJSON
 
+// swiftlint:disable file_length
 public extension String {
     // swiftlint:disable identifier_name
     var ns: NSString {
         return self as NSString
+    }
+    
+    var nilIfEmpty: String? {
+        return isEmpty ? nil : self
     }
     
     var isNotEmpty: Bool {
@@ -270,6 +275,70 @@ public extension String {
     
     var separatedKorean: String {
         return Jamo.getJamo(self)
+    }
+    
+    var euckrURLEncoded: String {
+        let query = self
+        let rawEncoding = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.EUC_KR.rawValue))
+        let encoding = String.Encoding(rawValue: rawEncoding)
+        let eucKRStringData = query.data(using: encoding) ?? Data()
+        let outputQuery = eucKRStringData.map {byte->String in
+            if byte >= UInt8(ascii: "A") && byte <= UInt8(ascii: "Z")
+                || byte >= UInt8(ascii: "a") && byte <= UInt8(ascii: "z")
+                || byte >= UInt8(ascii: "0") && byte <= UInt8(ascii: "9")
+                || byte == UInt8(ascii: "_") || byte == UInt8(ascii: ".") || byte == UInt8(ascii: "-") {
+                return String(Character(UnicodeScalar(UInt32(byte))!))
+            } else if byte == UInt8(ascii: " ") {
+                return "+"
+            } else {
+                return String(format: "%%%02X", byte)
+            }
+        }.joined()
+        
+        return outputQuery
+    }
+    
+    var htmlStripped: String {
+        var string = String(self)
+        while true {
+            if let range = string.range(of: "<[^>]+>", options: .regularExpression, range: nil, locale: nil) {
+                string = string.replacingCharacters(in: range, with: "")
+            } else {
+                break
+            }
+        }
+
+        return string
+    }
+    
+    // swiftlint:disable identifier_name
+    var htmlSpecialCharsRemoved: String {
+        var string = self.htmlStripped.trim()
+        string = string.replacingOccurrences(of: "&nbsp;", with: " ")
+        string = string.replacingOccurrences(of: "&lt;", with: "<")
+        string = string.replacingOccurrences(of: "&gt;", with: ">")
+        string = string.replacingOccurrences(of: "&amp;", with: "&")
+        string = string.replacingOccurrences(of: "\t", with: " ")
+        string = string.replacingOccurrences(of: "\r", with: " ")
+        string = string.replacingOccurrences(of: "\n", with: " ")
+        while string.contains("  ") {
+            string = string.replacingOccurrences(of: "  ", with: " ")
+        }
+        string = string.trim()
+        return string
+    }
+    
+    var htmlCommentsRemoved: String {
+        var s = self
+        while true {
+            if let r = s.range(of: "<!--.*?-->", options: .regularExpression, range: nil, locale: nil) {
+                s = s.replacingCharacters(in: r, with: "")
+            } else {
+                break
+            }
+        }
+
+        return s
     }
 }
 

@@ -17,6 +17,14 @@ open class LogUtility {
         return dateFormatter
     }()
     
+    /// info
+    open func i(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        printDate()
+        print("info:")
+        print(message)
+        print("\(file)@\(function):\(line)")
+    }
+    
     /// debug
     open func d(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         printDate()

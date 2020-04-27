@@ -73,10 +73,10 @@ open class HTTPRequestUtility {
         let semaphore = DispatchSemaphore(value: 0)
         var responseString: String?
         var responseError: Error?
-        dataRequest.responseString(queue: .global()) { response in
+        dataRequest.responseData { response in
             switch response.result {
-            case .success(let string):
-                responseString = string
+            case .success(let data):
+                responseString = String(data: data, encoding: encoding)
             case .failure(let error):
                 responseError = error
             }
@@ -122,7 +122,11 @@ public extension String {
                               encoding: String.Encoding = .utf8,
                               completion: ((HTTPRequestUtility.Response<T>) -> Void)? = nil) {
         DispatchQueue.global().async {
-            let response = self.requestAsURL(type: type, parameters: parameters, body: body, headers: headers, encoding: encoding)
+            let response = self.requestAsURL(type: type,
+                                             parameters: parameters,
+                                             body: body,
+                                             headers: headers,
+                                             encoding: encoding)
             DispatchQueue.main.async { completion?(response) }
         }
     }
