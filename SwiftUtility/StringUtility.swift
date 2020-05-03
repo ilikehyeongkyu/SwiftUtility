@@ -53,8 +53,8 @@ public extension String {
         return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? self
     }
     
-    func asJSON(encoding: String.Encoding = .utf8) -> JSON? {
-        guard let data = self.data(using: encoding) else { return nil }
+    func asJSON() -> JSON? {
+        guard let data = self.data(using: .utf8) else { return nil }
         return try? JSON(data: data)
     }
     

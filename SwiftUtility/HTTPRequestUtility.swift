@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import SwiftSoup
 
 open class HTTPRequestUtility {
     static let shared = HTTPRequestUtility()
@@ -157,10 +158,17 @@ public extension String {
             if T.self == String.self {
                 return HTTPRequestUtility.Response(responseString as! T)
             } else if T.self == JSON.self {
-                guard let json = responseString.asJSON(encoding: encoding) else {
+                guard let json = responseString.asJSON() else {
                     return HTTPRequestUtility.Response(JSONError())
                 }
                 return HTTPRequestUtility.Response(json as! T)
+            } else if T.self == Document.self {
+                do {
+                    let document = try SwiftSoup.parse(responseString)
+                    return HTTPRequestUtility.Response(document as! T)
+                } catch {
+                    return HTTPRequestUtility.Response(error)
+                }
             }
         }
         
