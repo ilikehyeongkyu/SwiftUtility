@@ -28,6 +28,10 @@ public extension Collection {
 }
 
 public extension Array {
+    var lastIndex: Int {
+        return count - 1
+    }
+    
     subscript (safe index: Int) -> Element? {
         return indices ~= index ? self[index] : nil
     }
