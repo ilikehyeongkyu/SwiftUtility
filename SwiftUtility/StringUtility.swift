@@ -99,7 +99,8 @@ public extension String {
         return date?.timeIntervalSince1970
     }
     
-    /// 콜론으로 구분된 시간 문자열(예를 들면 17:35)을 자정으로부터의 소요시간 값으로 변환
+    /// 콜론으로 구분된 시간 문자열을 0시부터의 소요시간 값으로 변환
+    /// 예를 들면 21:30, 09:25 등의 시간값을 변환하는데 사용
     var asSeconds: TimeInterval? {
         let value = self.noWhitespaces.removeAll(":")
         if value.count != 4 { return nil }
@@ -108,7 +109,7 @@ public extension String {
         return TimeInterval((hour * 60 * 60) + (minute * 60))
     }
     
-    /// 시간 문자열(예를들면 5분)을 초단위시간(TimeInterval) 값으로 변환
+    /// 5분, 17분 등으로 표기된 시간값을 변환하는데 사용
     func parseToTimeInterval() -> TimeInterval? {
         let text = self.noWhitespaces
         if text == text.matches(pattern: "\\d+분").first {
@@ -416,6 +417,10 @@ private class Jamo {
 public extension NSString {
     var s: String {
         return self as String
+    }
+    
+    func trim() -> NSString {
+        return trimmingCharacters(in: .whitespacesAndNewlines).ns
     }
 	
 	var fullRange: NSRange {
