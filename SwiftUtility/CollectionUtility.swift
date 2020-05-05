@@ -16,6 +16,15 @@ public extension Collection {
             index += 1
         }
     }
+    
+    @inlinable func mapIndexed<T>(_ body: (_ index: Int, _ element: Element) throws -> T) rethrows -> [T] {
+        var index = 0
+        return try map { element in
+            let result = try body(index, element)
+            index += 1
+            return result
+        }
+    }
 }
 
 public extension Array {
