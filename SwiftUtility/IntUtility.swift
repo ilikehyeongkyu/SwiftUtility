@@ -29,4 +29,14 @@ public extension Int {
         guard self > 0 else { return nil }
         return String(self).lpad(length, padChar)
     }
+    
+    var asString: String {
+        return "\(self)"
+    }
+}
+
+public extension Int64 {
+    var asString: String {
+        return "\(self)"
+    }
 }
