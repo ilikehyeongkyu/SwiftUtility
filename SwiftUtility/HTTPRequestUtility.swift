@@ -57,6 +57,9 @@ open class HTTPRequestUtility {
             }
             return HTTPHeaders(headers)
         }()
+		
+		AF.session.configuration.timeoutIntervalForRequest = 30
+		AF.session.configuration.timeoutIntervalForResource = 60
         
         var dataRequest: DataRequest!
         if let body = body {
