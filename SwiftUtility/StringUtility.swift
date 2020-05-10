@@ -88,32 +88,46 @@ public extension String {
         return self.replacingOccurrences(of: string, with: "")
     }
     
-    /// 콜론으로 구분된 시간 문자열을 오늘날짜의 시간값으로 변환
-    var asHourMinute: TimeInterval? {
-        let value = self.noWhitespaces.removeAll(":")
-        if value.count != 4 { return nil }
-        guard let hour = value.ns.substring(to: 2).asInt,
-            let minute = value.ns.substring(from: 2).asInt else { return nil }
-        let calendar = Calendar(identifier: .iso8601)
-        let date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: Date())
-        return date?.timeIntervalSince1970
-    }
-    
-    /// 콜론으로 구분된 시간 문자열을 0시부터의 소요시간 값으로 변환
-    /// 예를 들면 21:30, 09:25 등의 시간값을 변환하는데 사용
+    /// 콜론 구분된 시간 또는 "10시 30분" 등의 문자열을 0시부터의 소요시간 값으로 변환
+	/// 예를 들면 "21:30", "09:25", "10시 30분" 등의 시간값을 변환하는데 사용
     var asSeconds: TimeInterval? {
-        let value = self.noWhitespaces.removeAll(":")
-        if value.count != 4 { return nil }
-        guard let hour = value.ns.substring(to: 2).asInt,
-            let minute = value.ns.substring(from: 2).asInt else { return nil }
+		var hour = 0
+		var minute = 0
+		if count == 4 || contains(":") {
+			let value = self.noWhitespaces.removeAll(":")
+			if value.count != 4 { return nil }
+			
+			guard
+				let hourNumber = value.ns.substring(to: 2).asInt,
+				let minuteNumber = value.ns.substring(from: 2).asInt else {
+					return nil
+			}
+			
+			hour = hourNumber
+			minute = minuteNumber
+		} else if contains("시") {
+			let value = noWhitespaces.components(separatedBy: "시")
+			guard
+				let hourNumber = value.first?.findInt(),
+				let minuteNumber = value[1].findInt() else {
+					return nil
+			}
+			
+			hour = hourNumber
+			minute = minuteNumber
+		}
+		
         return TimeInterval((hour * 60 * 60) + (minute * 60))
     }
     
-    /// 5분, 17분 등으로 표기된 시간값을 변환하는데 사용
+    /// "5분", "17 분", "20(분)", "30 (분)"
+	/// ...등으로 표기된 시간값을 변환하는데 사용
     func parseToTimeInterval() -> TimeInterval? {
         let text = self.noWhitespaces
-        if text == text.matches(pattern: "\\d+분").first {
-            return text.substringBefore("분")!.asDouble! * 60
+		if text == text.matches(pattern: "\\d+\\s*\\(?분\\)?").first {
+			if let number = text.findInt() {
+				return TimeInterval(number * 60)
+			}
         }
         
         // TODO more
