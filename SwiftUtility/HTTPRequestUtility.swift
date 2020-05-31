@@ -13,9 +13,19 @@ import SwiftSoup
 
 open class HTTPRequestUtility {
     static let shared = HTTPRequestUtility()
+	
+	private lazy var session = { () -> Session in
+		return Session()
+	}()
+	
+	private lazy var sessionIgnoreSSLError = { () -> Session in
+		return Session(delegate: self.sessionDelegateForIgnoreSSLError)
+	}()
+	
+	private let sessionDelegateForIgnoreSSLError = SessionDelegateForIgnoreSSLError()
     
     open var customUserAgent: String?
-    
+	
     open func requestGetSync(_ urlString: String,
                              parameters: [String: Any]? = nil,
                              headers: [String: String]? = nil,
@@ -33,7 +43,8 @@ open class HTTPRequestUtility {
                           parameters: [String: Any]? = nil,
                           body: String? = nil,
                           headers: [String: String]? = nil,
-                          encoding: String.Encoding = .utf8) -> Result<String, Error> {
+                          encoding: String.Encoding = .utf8,
+						  ignoreSSLError: Bool = false) -> Result<String, Error> {
         var urlString = urlString
         
         let method = HTTPMethod(rawValue: method)
@@ -58,20 +69,25 @@ open class HTTPRequestUtility {
             return HTTPHeaders(headers)
         }()
 		
-		AF.session.configuration.timeoutIntervalForRequest = 30
-		AF.session.configuration.timeoutIntervalForResource = 60
+		let session =
+			ignoreSSLError
+				? self.session
+				: self.sessionIgnoreSSLError
+		
+		session.sessionConfiguration.timeoutIntervalForRequest = 30
+		session.sessionConfiguration.timeoutIntervalForResource = 60
         
         var dataRequest: DataRequest!
         if let body = body {
             do {
                 var request = try URLRequest(url: url, method: method, headers: headers)
                 request.httpBody = body.data(using: encoding)
-                dataRequest = AF.request(request)
+				dataRequest = session.request(request)
             } catch {
                 return .failure(error)
             }
         } else {
-            dataRequest = AF.request(urlString, method: method, parameters: parameters, headers: headers)
+            dataRequest = session.request(urlString, method: method, parameters: parameters, headers: headers)
         }
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -100,6 +116,19 @@ open class HTTPRequestUtility {
                 NSLocalizedDescriptionKey: "HTTP response string is nil."
         ]))
     }
+	
+	// MARK : - SessionDelegate
+	
+	private class SessionDelegateForIgnoreSSLError: SessionDelegate {
+		public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+			completionHandler(
+				.useCredential,
+				URLCredential(trust: challenge.protectionSpace.serverTrust!)
+			)
+		}
+	}
+	
+	// MARK: -
     
     public class Response<T> {
         public let value: T?
@@ -135,11 +164,12 @@ public extension String {
         }
     }
     
-    func requestAsURL<T>(type: T.Type,
-                         parameters: [String: Any]? = nil,
-                         body: String? = nil,
-                         headers: [String: String]? = nil,
-                         encoding: String.Encoding = .utf8) -> HTTPRequestUtility.Response<T> {
+	func requestAsURL<T>(type: T.Type,
+						 parameters: [String: Any]? = nil,
+						 body: String? = nil,
+						 headers: [String: String]? = nil,
+						 encoding: String.Encoding = .utf8,
+						 ignoreSSLError: Bool = false) -> HTTPRequestUtility.Response<T> {
         var method = "GET"
         if parameters != nil { method = "POST" }
         if body != nil { method = "POST" }
@@ -150,7 +180,8 @@ public extension String {
             parameters: parameters,
             body: body,
             headers: headers,
-            encoding: encoding
+            encoding: encoding,
+			ignoreSSLError: ignoreSSLError
         )
         
         if case Result.failure(let error) = result {
