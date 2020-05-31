@@ -179,17 +179,17 @@ public extension String {
         return results
     }
     
-    func substringBefore(_ string: String) -> String? {
+    func substringBefore(_ string: String) -> String {
         let ns = self.ns
         let range = ns.range(of: string)
-        if range.location == NSNotFound { return nil }
+        if range.location == NSNotFound { return self }
         return ns.substring(to: range.location)
     }
     
-    func substringAfter(_ string: String) -> String? {
+    func substringAfter(_ string: String) -> String {
         let ns = self.ns
         let range = ns.range(of: string)
-        if range.location == NSNotFound { return nil }
+        if range.location == NSNotFound { return self }
         return ns.substring(from: range.upperBound)
     }
     
