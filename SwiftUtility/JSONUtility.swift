@@ -46,4 +46,10 @@ public extension JSON {
 		
 		return result
 	}
+	
+	mutating func merge(with other: JSON) {
+		other.forEach { key, item in
+			self[key] = item
+		}
+	}
 }
