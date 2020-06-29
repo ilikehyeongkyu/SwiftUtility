@@ -165,18 +165,19 @@ public extension String {
     }
     
 	func requestAsURL<T>(type: T.Type,
+						 method: String? = nil,
 						 parameters: [String: Any]? = nil,
 						 body: String? = nil,
 						 headers: [String: String]? = nil,
 						 encoding: String.Encoding = .utf8,
 						 ignoreSSLError: Bool = false) -> HTTPRequestUtility.Response<T> {
-        var method = "GET"
+		var method = method
         if parameters != nil { method = "POST" }
         if body != nil { method = "POST" }
         
         let result = HTTPRequestUtility.shared.requestSync(
             self,
-            method: method,
+            method: method ?? "GET",
             parameters: parameters,
             body: body,
             headers: headers,
