@@ -164,14 +164,14 @@ public extension String {
         }
     }
     
-	func requestAsURL<T>(type: T.Type,
-						 method: String? = nil,
-						 parameters: [String: Any]? = nil,
-						 body: String? = nil,
-						 headers: [String: String]? = nil,
-						 encoding: String.Encoding = .utf8,
-						 ignoreSSLError: Bool = false) -> HTTPRequestUtility.Response<T> {
-		var method = method
+    func requestAsURL<T>(type: T.Type,
+                         method: String? = nil,
+                         parameters: [String: Any]? = nil,
+                         body: String? = nil,
+                         headers: [String: String]? = nil,
+                         encoding: String.Encoding = .utf8,
+                         ignoreSSLError: Bool = false) -> HTTPRequestUtility.Response<T> {
+        var method = method
         if parameters != nil { method = "POST" }
         if body != nil { method = "POST" }
         
