@@ -91,7 +91,7 @@ public extension String {
     /// 콜론 구분된 시간 또는 "10시 30분" 등의 문자열을 0시부터의 소요시간 값으로 변환
 	/// 예를 들면 "21:30", "09:25", "10시 30분" 등의 시간값을 변환하는데 사용
     var asSeconds: TimeInterval? {
-		var string = self.trim()
+		let string = self.trim()
 		var hour = 0
 		var minute = 0
 		if string.count == 4 || contains(":") {
