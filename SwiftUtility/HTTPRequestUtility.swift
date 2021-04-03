@@ -71,8 +71,8 @@ open class HTTPRequestUtility {
 		
 		let session =
 			ignoreSSLError
-				? self.session
-				: self.sessionIgnoreSSLError
+				? self.sessionIgnoreSSLError
+				: self.session
 		
 		session.sessionConfiguration.timeoutIntervalForRequest = 30
 		session.sessionConfiguration.timeoutIntervalForResource = 60
