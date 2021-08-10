@@ -447,6 +447,15 @@ public extension NSString {
         if range.location == NSNotFound { return -1 }
         return range.location
     }
+	
+	func lastIndexOf(_ string: String, _ startLocation: Int = 0) -> Int {
+		let range = self.range(
+			of: string,
+			options: .backwards,
+			range: NSRange(location: startLocation, length: self.length - startLocation))
+		if range.location == NSNotFound { return -1 }
+		return range.location
+	}
     
     /// startIndex, endIndex는 음수를 설정할 수 있다.
     /// 음수를 설정하면 문자열의 last에서부터의 index로 설정한다.
