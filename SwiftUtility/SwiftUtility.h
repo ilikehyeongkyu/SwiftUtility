@@ -2,8 +2,7 @@
 //  SwiftUtility.h
 //  SwiftUtility
 //
-//  Created by Hank.Lee on 12/03/2020.
-//  Copyright © 2020 hyeongkyu. All rights reserved.
+//  Created by Hyeongkyu Lee on 2021/09/14.
 //
 
 #import <Foundation/Foundation.h>
