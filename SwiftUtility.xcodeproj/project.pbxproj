@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA119E762713CA890083A4EC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EA119E752713CA890083A4EC /* Alamofire */; };
+		EA119E792713CADE0083A4EC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = EA119E782713CADE0083A4EC /* SwiftyJSON */; };
+		EA119E7C2713CB250083A4EC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = EA119E7B2713CB250083A4EC /* SwiftSoup */; };
 		EAE3526926F00DF2002821F8 /* SwiftUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE3525F26F00DF2002821F8 /* SwiftUtility.framework */; };
 		EAE3526E26F00DF2002821F8 /* SwiftUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE3526D26F00DF2002821F8 /* SwiftUtilityTests.swift */; };
-		EAE3529F26F00E4C002821F8 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = EAE3529E26F00E4C002821F8 /* SwiftSoup */; };
-		EAE352A226F00E63002821F8 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = EAE352A126F00E63002821F8 /* SwiftyJSON */; };
-		EAE352A526F00E6B002821F8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EAE352A426F00E6B002821F8 /* Alamofire */; };
 		EAE352BA26F00EF0002821F8 /* SwiftUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE352A626F00EEF002821F8 /* SwiftUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAE352BB26F00EF0002821F8 /* Appliable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352A726F00EEF002821F8 /* Appliable.swift */; };
 		EAE352BD26F00EF0002821F8 /* IntUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352A926F00EEF002821F8 /* IntUtility.swift */; };
@@ -85,9 +85,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAE352A526F00E6B002821F8 /* Alamofire in Frameworks */,
-				EAE352A226F00E63002821F8 /* SwiftyJSON in Frameworks */,
-				EAE3529F26F00E4C002821F8 /* SwiftSoup in Frameworks */,
+				EA119E792713CADE0083A4EC /* SwiftyJSON in Frameworks */,
+				EA119E762713CA890083A4EC /* Alamofire in Frameworks */,
+				EA119E7C2713CB250083A4EC /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,9 +214,9 @@
 			);
 			name = SwiftUtility;
 			packageProductDependencies = (
-				EAE3529E26F00E4C002821F8 /* SwiftSoup */,
-				EAE352A126F00E63002821F8 /* SwiftyJSON */,
-				EAE352A426F00E6B002821F8 /* Alamofire */,
+				EA119E752713CA890083A4EC /* Alamofire */,
+				EA119E782713CADE0083A4EC /* SwiftyJSON */,
+				EA119E7B2713CB250083A4EC /* SwiftSoup */,
 			);
 			productName = SwiftUtility;
 			productReference = EAE3525F26F00DF2002821F8 /* SwiftUtility.framework */;
@@ -288,9 +288,9 @@
 			);
 			mainGroup = EAE3525526F00DF2002821F8;
 			packageReferences = (
-				EAE3529D26F00E4C002821F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
-				EAE352A026F00E63002821F8 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
-				EAE352A326F00E6B002821F8 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				EA119E742713CA880083A4EC /* XCRemoteSwiftPackageReference "Alamofire" */,
+				EA119E772713CADE0083A4EC /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				EA119E7A2713CB250083A4EC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = EAE3526026F00DF2002821F8 /* Products */;
 			projectDirPath = "";
@@ -698,15 +698,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EAE3529D26F00E4C002821F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+		EA119E742713CA880083A4EC /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.3;
+				minimumVersion = 5.4.4;
 			};
 		};
-		EAE352A026F00E63002821F8 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+		EA119E772713CADE0083A4EC /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
 			requirement = {
@@ -714,31 +714,31 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		EAE352A326F00E6B002821F8 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		EA119E7A2713CB250083A4EC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.3;
+				minimumVersion = 2.3.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EAE3529E26F00E4C002821F8 /* SwiftSoup */ = {
+		EA119E752713CA890083A4EC /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EAE3529D26F00E4C002821F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
-			productName = SwiftSoup;
+			package = EA119E742713CA880083A4EC /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
-		EAE352A126F00E63002821F8 /* SwiftyJSON */ = {
+		EA119E782713CADE0083A4EC /* SwiftyJSON */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EAE352A026F00E63002821F8 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			package = EA119E772713CADE0083A4EC /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
 		};
-		EAE352A426F00E6B002821F8 /* Alamofire */ = {
+		EA119E7B2713CB250083A4EC /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EAE352A326F00E6B002821F8 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
+			package = EA119E7A2713CB250083A4EC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
