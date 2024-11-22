@@ -12,19 +12,40 @@ import SwiftyJSON
 import SwiftSoup
 
 open class HTTPRequestUtility {
-    static let shared = HTTPRequestUtility()
-	
+    public static var shared: HTTPRequestUtility!
+    
+    private var customUserAgent: String?
+    private let hostsToDisabledTrustEvaluator: [String]
+    
+    public init(customUserAgent: String?, hostsToDisabledTrustEvaluator: [String]) {
+        self.customUserAgent = customUserAgent
+        self.hostsToDisabledTrustEvaluator = hostsToDisabledTrustEvaluator
+    }
+    
 	private lazy var session = { () -> Session in
 		return Session()
 	}()
 	
-	private lazy var sessionIgnoreSSLError = { () -> Session in
-		return Session(delegate: self.sessionDelegateForIgnoreSSLError)
-	}()
+    private lazy var sessionIgnoreErrorSSL: Session = {
+        return Session(
+            delegate: self.sessionDelegateForIgnoreSSLError,
+            serverTrustManager: .init(
+                evaluators: self.serverTrustManagerEvaluators
+            )
+        )
+    }()
+    
+    private var serverTrustManagerEvaluators: [String: ServerTrustEvaluating] {
+        var result: [String: ServerTrustEvaluating] = [:]
+        
+        for host in self.hostsToDisabledTrustEvaluator {
+            result[host] = DisabledTrustEvaluator()
+        }
+        
+        return result
+    }
 	
 	private let sessionDelegateForIgnoreSSLError = SessionDelegateForIgnoreSSLError()
-    
-    open var customUserAgent: String?
 	
     open func requestGetSync(_ urlString: String,
                              parameters: [String: Any]? = nil,
@@ -71,7 +92,7 @@ open class HTTPRequestUtility {
 		
 		let session =
 			ignoreSSLError
-				? self.sessionIgnoreSSLError
+				? self.sessionIgnoreErrorSSL
 				: self.session
 		
 		session.sessionConfiguration.timeoutIntervalForRequest = 30
