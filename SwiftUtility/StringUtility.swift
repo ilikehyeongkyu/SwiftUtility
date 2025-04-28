@@ -198,6 +198,15 @@ public extension String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
+    func dropFirst() -> String {
+        return NSString(string: self).substring(from: 1)
+    }
+    
+    func dropLast() -> String {
+        let nsString = NSString(string: self)
+        return nsString.substring(to: nsString.length - 1)
+    }
+    
     var indentCount: Int {
         for charIndex in 0 ..< count {
             let isWhiteSpace = self[self.index(startIndex, offsetBy: charIndex)]
