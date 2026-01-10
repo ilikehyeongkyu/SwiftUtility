@@ -13,6 +13,10 @@ public extension Double {
         return self * Double(value)
     }
     
+    var asInt: Int? {
+        return Int(self)
+    }
+    
     var asFloat: Float? {
         return Float(self)
     }
