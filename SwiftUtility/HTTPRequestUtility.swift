@@ -44,7 +44,7 @@ open class HTTPRequestUtility {
                           body: String? = nil,
                           headers: [String: String]? = nil,
                           encoding: String.Encoding = .utf8,
-						  ignoreSSLError: Bool = false) -> Result<String, Error> {
+                          ignoreSSLError: Bool = true) -> Result<String, Error> {
         var urlString = urlString
         
         let method = HTTPMethod(rawValue: method)
@@ -170,7 +170,7 @@ public extension String {
                          body: String? = nil,
                          headers: [String: String]? = nil,
                          encoding: String.Encoding = .utf8,
-                         ignoreSSLError: Bool = false) -> HTTPRequestUtility.Response<T> {
+                         ignoreSSLError: Bool = true) -> HTTPRequestUtility.Response<T> {
         var method = method
         if parameters != nil { method = "POST" }
         if body != nil { method = "POST" }
