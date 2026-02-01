@@ -12,20 +12,20 @@ import SwiftyJSON
 import SwiftSoup
 
 open class HTTPRequestUtility {
-    static let shared = HTTPRequestUtility()
-	
-	private lazy var session = { () -> Session in
-		return Session()
-	}()
-	
-	private lazy var sessionIgnoreSSLError = { () -> Session in
-		return Session(delegate: self.sessionDelegateForIgnoreSSLError)
-	}()
-	
-	private let sessionDelegateForIgnoreSSLError = SessionDelegateForIgnoreSSLError()
+    public static let shared = HTTPRequestUtility()
+    
+    // protect session instances with a serial queue
+    private let sessionLock = DispatchQueue(label: "kr.co.koreabus.httprequestutility.session.lock")
+    
+    private let sessionDelegateForIgnoreSSLError = SessionDelegateForIgnoreSSLError()
+    
+    private var session: Session = Session()
+    
+    // use the stored delegate instance when creating the ignore-SSL session
+    private var sessionIgnoreSSLError: Session = Session(delegate: SessionDelegateForIgnoreSSLError())
     
     open var customUserAgent: String?
-	
+    
     open func requestGetSync(_ urlString: String,
                              parameters: [String: Any]? = nil,
                              headers: [String: String]? = nil,
@@ -68,21 +68,19 @@ open class HTTPRequestUtility {
             }
             return HTTPHeaders(headers)
         }()
-		
-		let session =
-			ignoreSSLError
-				? self.sessionIgnoreSSLError
-				: self.session
-		
-		session.sessionConfiguration.timeoutIntervalForRequest = 30
-		session.sessionConfiguration.timeoutIntervalForResource = 60
+        
+        // obtain current session instance under lock to avoid races with recreateSessions()
+        let session: Session = sessionLock.sync { ignoreSSLError ? self.sessionIgnoreSSLError : self.session }
+        
+        session.sessionConfiguration.timeoutIntervalForRequest = 30
+        session.sessionConfiguration.timeoutIntervalForResource = 60
         
         var dataRequest: DataRequest!
         if let body = body {
             do {
                 var request = try URLRequest(url: url, method: method, headers: headers)
                 request.httpBody = body.data(using: encoding)
-				dataRequest = session.request(request)
+                dataRequest = session.request(request)
             } catch {
                 return .failure(error)
             }
@@ -93,7 +91,8 @@ open class HTTPRequestUtility {
         let semaphore = DispatchSemaphore(value: 0)
         var responseString: String?
         var responseError: Error?
-        dataRequest.responseData { response in
+        // ensure callback runs on a background queue to avoid potential deadlocks if caller waits synchronously
+        dataRequest.responseData(queue: DispatchQueue.global()) { response in
             switch response.result {
             case .success(let data):
                 responseString = String(data: data, encoding: encoding)
@@ -116,19 +115,36 @@ open class HTTPRequestUtility {
                 NSLocalizedDescriptionKey: "HTTP response string is nil."
         ]))
     }
-	
-	// MARK : - SessionDelegate
-	
-	private class SessionDelegateForIgnoreSSLError: SessionDelegate {
-		public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-			completionHandler(
-				.useCredential,
-				URLCredential(trust: challenge.protectionSpace.serverTrust!)
-			)
-		}
-	}
-	
-	// MARK: -
+    
+    // MARK : - SessionDelegate
+    
+    @objcMembers
+    private final class SessionDelegateForIgnoreSSLError: SessionDelegate {
+        // Expose exact ObjC selector and safely handle serverTrust
+        @objc(urlSession:didReceiveChallenge:completionHandler:)
+        public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            guard let serverTrust = challenge.protectionSpace.serverTrust else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+            completionHandler(.useCredential, URLCredential(trust: serverTrust))
+        }
+    }
+    
+    // Recreate (invalidate + replace) Alamofire Session instances safely.
+    public func recreateSessions() {
+        sessionLock.sync {
+            // finish outstanding tasks gracefully then invalidate backing URLSessions
+            self.session.session.finishTasksAndInvalidate()
+            self.sessionIgnoreSSLError.session.finishTasksAndInvalidate()
+
+            // recreate new Alamofire Session instances using the stored delegate
+            self.session = Session()
+            self.sessionIgnoreSSLError = Session(delegate: self.sessionDelegateForIgnoreSSLError)
+        }
+    }
+    
+    // MARK: -
     
     public class Response<T> {
         public let value: T?
@@ -182,7 +198,7 @@ public extension String {
             body: body,
             headers: headers,
             encoding: encoding,
-			ignoreSSLError: ignoreSSLError
+            ignoreSSLError: ignoreSSLError
         )
         
         if case Result.failure(let error) = result {
