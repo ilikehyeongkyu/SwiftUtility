@@ -120,10 +120,21 @@ open class HTTPRequestUtility {
     
     @objcMembers
     private final class SessionDelegateForIgnoreSSLError: SessionDelegate {
-        // Expose exact ObjC selector and safely handle serverTrust
+        // Session-level challenge (fallback)
         @objc(urlSession:didReceiveChallenge:completionHandler:)
         public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-            guard let serverTrust = challenge.protectionSpace.serverTrust else {
+            acceptChallenge(challenge, completionHandler: completionHandler)
+        }
+
+        // Task-level challenge — Alamofire routes SSL errors here (NSURLErrorDomain -1202)
+        @objc(URLSession:task:didReceiveChallenge:completionHandler:)
+        public override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            acceptChallenge(challenge, completionHandler: completionHandler)
+        }
+
+        private func acceptChallenge(_ challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+                  let serverTrust = challenge.protectionSpace.serverTrust else {
                 completionHandler(.performDefaultHandling, nil)
                 return
             }
