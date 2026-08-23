@@ -242,20 +242,23 @@ public extension String {
             ignoreSSLError: ignoreSSLError
         )
 
+        var responseString: String?
+        var responseHeaders: [AnyHashable: Any]?
+
         if case Result.failure(let error) = result {
-            return HTTPRequestUtility.Response(error)
+            return HTTPRequestUtility.Response(error, responseString: responseString, responseHeaders: responseHeaders)
         }
 
         if case Result.success(let raw) = result {
-            let responseString = raw.string
-            let responseHeaders = raw.headers
+            responseString = raw.string
+            responseHeaders = raw.headers
 
             if T.self == String.self {
-                return HTTPRequestUtility.Response(responseString as! T,
+                return HTTPRequestUtility.Response(responseString! as! T,
                                                    responseString: responseString,
                                                    responseHeaders: responseHeaders)
             } else if T.self == JSON.self {
-                guard let json = responseString.asJSON() else {
+                guard let json = responseString!.asJSON() else {
                     return HTTPRequestUtility.Response(JSONError(),
                                                        responseString: responseString,
                                                        responseHeaders: responseHeaders)
@@ -265,7 +268,7 @@ public extension String {
                                                    responseHeaders: responseHeaders)
             } else if T.self == Document.self {
                 do {
-                    let document = try SwiftSoup.parse(responseString)
+                    let document = try SwiftSoup.parse(responseString!)
                     return HTTPRequestUtility.Response(document as! T,
                                                        responseString: responseString,
                                                        responseHeaders: responseHeaders)
@@ -277,6 +280,6 @@ public extension String {
             }
         }
 
-        return HTTPRequestUtility.Response(UnsupportedTypeError())
+        return HTTPRequestUtility.Response(UnsupportedTypeError(), responseString: responseString, responseHeaders: responseHeaders)
     }
 }
