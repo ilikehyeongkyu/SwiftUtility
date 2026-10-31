@@ -29,6 +29,7 @@
 		EAE352CA26F00EF0002821F8 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352B626F00EF0002821F8 /* Error.swift */; };
 		EAE352CC26F00EF0002821F8 /* LogUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352B826F00EF0002821F8 /* LogUtility.swift */; };
 		EAE352CD26F00EF0002821F8 /* StringUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352B926F00EF0002821F8 /* StringUtility.swift */; };
+		EA5B0A0226F0A00100D0E001 /* BrowserUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5B0A0126F0A00100D0E001 /* BrowserUserAgent.swift */; };
 		EAE352F626F015B6002821F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352F526F015B6002821F8 /* AppDelegate.swift */; };
 		EAE352F826F015B6002821F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352F726F015B6002821F8 /* SceneDelegate.swift */; };
 		EAE352FA26F015B6002821F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE352F926F015B6002821F8 /* ViewController.swift */; };
@@ -69,6 +70,7 @@
 		EAE352B626F00EF0002821F8 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		EAE352B826F00EF0002821F8 /* LogUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogUtility.swift; sourceTree = "<group>"; };
 		EAE352B926F00EF0002821F8 /* StringUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtility.swift; sourceTree = "<group>"; };
+		EA5B0A0126F0A00100D0E001 /* BrowserUserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserUserAgent.swift; sourceTree = "<group>"; };
 		EAE352CF26F01090002821F8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAE352F326F015B6002821F8 /* SwiftUtilityTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUtilityTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE352F526F015B6002821F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				EAE352AA26F00EEF002821F8 /* SequenceUtility.swift */,
 				EAE352AF26F00EEF002821F8 /* SQLUtility.swift */,
 				EAE352B926F00EF0002821F8 /* StringUtility.swift */,
+				EA5B0A0126F0A00100D0E001 /* BrowserUserAgent.swift */,
 			);
 			path = SwiftUtility;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				EAE352C926F00EF0002821F8 /* MirrorUtility.swift in Sources */,
 				EAE352C026F00EF0002821F8 /* DoubleUtility.swift in Sources */,
 				EAE352CD26F00EF0002821F8 /* StringUtility.swift in Sources */,
+				EA5B0A0226F0A00100D0E001 /* BrowserUserAgent.swift in Sources */,
 				EAE352BD26F00EF0002821F8 /* IntUtility.swift in Sources */,
 				EAE352C326F00EF0002821F8 /* SQLUtility.swift in Sources */,
 				EAE352C526F00EF0002821F8 /* HTTPRequestUtility.swift in Sources */,
